@@ -1,0 +1,1140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tamil Dictionary</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f3;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+header {
+    background: #123b36;
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+input {
+    width: 85%;
+    padding: 14px;
+    margin: 20px 0;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+button {
+    padding: 12px 20px;
+    background: #176b55;
+    color: hwb(0 93% 6%);
+    border: none;
+    border-radius: 8px;
+}
+
+#result {
+    background: white
+    padding: 20px;
+    margin: 15px auto;
+    border-radius: 10px;
+    max-width: 450px;
+    text-align: left;
+}
+
+.tamil {
+    color: #176b55;
+    font-size: 27px;
+    font-weight: bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>தமிழ் அகராதி</h1>
+    <h3>Tamil Dictionary</h3>
+    <p>Discover Tamil and English words</p>
+</header>
+
+<input
+    type="text"
+    id="search"
+    placeholder="Enter Tamil or English word"
+>
+
+<button onclick="searchWord()">Search</button>
+
+<div id="result">
+    Search for a word to see its meaning.
+</div>
+
+<script>
+
+// Dictionary data
+const dictionary = {
+    "love": {
+        tamil: "அன்பு",
+        meaning: "Love or affection",
+        example: "அன்பு அனைவரையும் இணைக்கிறது."
+    },
+
+    "water": {
+        tamil: "தண்ணீர்",
+        meaning: "A liquid essential for life",
+        example: "தண்ணீர் உயிருக்கு அவசியம்."
+    },
+
+    "friend": {
+        tamil: "நண்பன்",
+        meaning: "A person you like and trust",
+        example: "என் நண்பன் நல்லவன்."
+    },
+
+    "அன்பு": {
+        tamil: "அன்பு",
+        meaning: "Love or affection",
+        example: "அன்பு அனைவரையும் இணைக்கிறது."
+    },
+
+    "நன்றி": {
+        tamil: "நன்றி",
+        meaning: "Thank you / Gratitude",
+        example: "உதவிக்கு மிக்க நன்றி."
+    },
+
+    "மகிழ்ச்சி": {
+        tamil: "மகிழ்ச்சி",
+        meaning: "Happiness",
+        example: "மகிழ்ச்சி வாழ்க்கைக்கு அழகு."
+    },
+      "book": {
+        tamil: "புத்தகம்",
+        meaning: "A set of written or printed pages",
+        example: "நான் ஒரு புத்தகம் படிக்கிறேன்."
+    },
+  "school":{
+    tamil:"பள்ளி",
+    meaning: "A place where students learn.",
+    example: "நான் பள்ளிக்குச் செல்கிறேன்."
+  },
+    "college": {
+        tamil: "கல்லூரி",
+        meaning: "An institution for higher education",
+        example: "நான் கல்லூரியில் படிக்கிறேன்."
+    },
+    "teacher": {
+        tamil: "ஆசிரியர்",
+        meaning: "A person who teaches",
+        example: "ஆசிரியர் பாடம் நடத்துகிறார்."
+    },
+    "student": {
+        tamil: "மாணவர்",
+        meaning: "A person who studies",
+        example: "நான் ஒரு மாணவர்."
+    },
+    "mother": {
+        tamil: "அம்மா",
+        meaning: "Female parent",
+        example: "என் அம்மா என்னை நேசிக்கிறார்."
+    },
+    "father": {
+        tamil: "அப்பா",
+        meaning: "Male parent",
+        example: "என் அப்பா வேலை செய்கிறார்."
+    },
+    "family": {
+        tamil: "குடும்பம்",
+        meaning: "A group of related people",
+        example: "என் குடும்பம் மகிழ்ச்சியானது."
+    },
+    "friendship": {
+        tamil: "நட்பு",
+        meaning: "The relationship between friends",
+        example: "நட்பு மிகவும் அழகானது."
+    },
+    "happiness": {
+        tamil: "மகிழ்ச்சி",
+        meaning: "The feeling of being happy",
+        example: "மகிழ்ச்சி வாழ்க்கைக்கு அழகு."
+    },
+    "sadness": {
+        tamil: "சோகம்",
+        meaning: "The feeling of being unhappy",
+        example: "அவனுக்கு சோகம் ஏற்பட்டது."
+    },
+    "knowledge": {
+        tamil: "அறிவு",
+        meaning: "Understanding and information",
+        example: "அறிவு மிகவும் முக்கியம்."
+    },
+    "wisdom": {
+        tamil: "ஞானம்",
+        meaning: "The ability to make good decisions",
+        example: "ஞானம் வாழ்க்கைக்கு வழிகாட்டும்."
+    },
+    "education": {
+        tamil: "கல்வி",
+        meaning: "The process of learning",
+        example: "கல்வி செல்வங்களில் சிறந்தது."
+    },
+    "language": {
+        tamil: "மொழி",
+        meaning: "A system of communication",
+        example: "தமிழ் ஒரு பழமையான மொழி."
+    },
+    "tamil": {
+        tamil: "தமிழ்",
+        meaning: "A classical Dravidian language",
+        example: "தமிழ் எங்கள் தாய்மொழி."
+    },
+    "english": {
+        tamil: "ஆங்கிலம்",
+        meaning: "An international language",
+        example: "நான் ஆங்கிலம் கற்கிறேன்."
+    },
+    "computer": {
+        tamil: "கணினி",
+        meaning: "An electronic computing device",
+        example: "நான் கணினியைப் பயன்படுத்துகிறேன்."
+    },
+    "phone": {
+        tamil: "தொலைபேசி",
+        meaning: "A device used for communication",
+        example: "என்னிடம் ஒரு தொலைபேசி உள்ளது."
+    },
+    "technology": {
+        tamil: "தொழில்நுட்பம்",
+        meaning: "The application of scientific knowledge",
+        example: "தொழில்நுட்பம் வளர்ந்து வருகிறது."
+    },
+    "internet": {
+        tamil: "இணையம்",
+        meaning: "A worldwide computer network",
+        example: "நான் இணையத்தைப் பயன்படுத்துகிறேன்."
+    },
+    "house": {
+        tamil: "வீடு",
+        meaning: "A place where people live",
+        example: "என் வீடு அழகானது."
+    },
+    "door": {
+        tamil: "கதவு",
+        meaning: "An entrance to a room or building",
+        example: "கதவைத் திற."
+    },
+    "window": {
+        tamil: "ஜன்னல்",
+        meaning: "An opening in a wall",
+        example: "ஜன்னலைத் திற."
+    },
+    "table": {
+        tamil: "மேசை",
+        meaning: "A piece of furniture",
+        example: "புத்தகம் மேசையில் உள்ளது."
+    },
+    "chair": {
+        tamil: "நாற்காலி",
+        meaning: "A seat for one person",
+        example: "நான் நாற்காலியில் அமர்ந்தேன்."
+    },
+    "pen": {
+        tamil: "பேனா",
+        meaning: "An instrument used for writing",
+        example: "நான் பேனாவால் எழுதுகிறேன்."
+    },
+    "pencil": {
+        tamil: "பென்சில்",
+        meaning: "A writing instrument",
+        example: "அவன் பென்சிலால் எழுதுகிறான்."
+    },
+    "paper": {
+        tamil: "காகிதம்",
+        meaning: "Material used for writing",
+        example: "எனக்கு ஒரு காகிதம் வேண்டும்."
+    },
+    "food": {
+        tamil: "உணவு",
+        meaning: "Something people eat",
+        example: "உணவு நம் உடலுக்கு அவசியம்."
+    },
+    "rice": {
+        tamil: "அரிசி",
+        meaning: "A common cereal grain",
+        example: "அரிசி சமைக்கப்படுகிறது."
+    },
+    "milk": {
+        tamil: "பால்",
+        meaning: "A nutritious white liquid",
+        example: "நான் பால் குடிக்கிறேன்."
+    },
+    "fruit": {
+        tamil: "பழம்",
+        meaning: "The edible part of a plant",
+        example: "பழங்கள் உடலுக்கு நல்லது."
+    },
+    "apple": {
+        tamil: "ஆப்பிள்",
+        meaning: "A sweet edible fruit",
+        example: "நான் ஆப்பிள் சாப்பிடுகிறேன்."
+    },
+    "mango": {
+        tamil: "மாம்பழம்",
+        meaning: "A tropical fruit",
+        example: "மாம்பழம் இனிப்பாக இருக்கும்."
+    },
+    "flower": {
+        tamil: "மலர்",
+        meaning: "The colourful part of a plant",
+        example: "மலர் அழகாக இருக்கிறது."
+    },
+    "tree": {
+        tamil: "மரம்",
+        meaning: "A large woody plant",
+        example: "மரம் நிழல் தருகிறது."
+    },
+    "leaf": {
+        tamil: "இலை",
+        meaning: "The green part of a plant",
+        example: "இலை பச்சையாக உள்ளது."
+    },
+    "earth": {
+        tamil: "பூமி",
+        meaning: "The planet we live on",
+        example: "பூமி நமது வீடு."
+    },
+    "sun": {
+        tamil: "சூரியன்",
+        meaning: "The star at the centre of our solar system",
+        example: "சூரியன் கிழக்கில் உதிக்கிறது."
+    },
+    "moon": {
+        tamil: "நிலா",
+        meaning: "Earth's natural satellite",
+        example: "இரவில் நிலா தெரிகிறது."
+    },
+    "star": {
+        tamil: "நட்சத்திரம்",
+        meaning: "A bright object in the night sky",
+        example: "வானில் நட்சத்திரங்கள் தெரிகின்றன."
+    },
+    "sky": {
+        tamil: "வானம்",
+        meaning: "The space above the earth",
+        example: "வானம் நீலமாக உள்ளது."
+    },
+    "rain": {
+        tamil: "மழை",
+        meaning: "Water falling from clouds",
+        example: "இன்று மழை பெய்கிறது."
+    },
+    "wind": {
+        tamil: "காற்று",
+        meaning: "Moving air",
+        example: "காற்று வீசுகிறது."
+    },
+    "fire": {
+        tamil: "நெருப்பு",
+        meaning: "Heat and light produced by burning",
+        example: "நெருப்பு வெப்பத்தைத் தருகிறது."
+    },
+    "river": {
+        tamil: "ஆறு",
+        meaning: "A natural flowing watercourse",
+        example: "ஆறு ஓடுகிறது."
+    },
+    "sea": {
+        tamil: "கடல்",
+        meaning: "A large body of salt water",
+        example: "கடல் அழகாக இருக்கிறது."
+    },
+    "mountain": {
+        tamil: "மலை",
+        meaning: "A large natural elevation",
+        example: "மலை உயரமாக உள்ளது."
+    },
+    "road": {
+        tamil: "சாலை",
+        meaning: "A path for vehicles",
+        example: "சாலை சுத்தமாக உள்ளது."
+    },
+    "car": {
+        tamil: "கார்",
+        meaning: "A four-wheeled motor vehicle",
+        example: "அப்பா கார் ஓட்டுகிறார்."
+    },
+    "bus": {
+        tamil: "பேருந்து",
+        meaning: "A large passenger vehicle",
+        example: "நான் பேருந்தில் செல்கிறேன்."
+    },
+    "train": {
+        tamil: "தொடர்வண்டி",
+        meaning: "A vehicle that runs on railway tracks",
+        example: "தொடர்வண்டி நிலையத்திற்கு வந்தது."
+    },
+    "bird": {
+        tamil: "பறவை",
+        meaning: "An animal with feathers and wings",
+        example: "பறவை பறக்கிறது."
+    },
+    "dog": {
+        tamil: "நாய்",
+        meaning: "A domestic animal",
+        example: "நாய் குரைக்கிறது."
+    },
+    "cat": {
+        tamil: "பூனை",
+        meaning: "A small domestic animal",
+        example: "பூனை தூங்குகிறது."
+    },
+    "cow": {
+        tamil: "பசு",
+        meaning: "A farm animal that gives milk",
+        example: "பசு பால் தருகிறது."
+    },
+    "lion": {
+        tamil: "சிங்கம்",
+        meaning: "A large wild cat",
+        example: "சிங்கம் காட்டில் வாழ்கிறது."
+    },
+    "elephant": {
+        tamil: "யானை",
+        meaning: "A very large land animal",
+        example: "யானை பெரிய விலங்கு."
+    },
+    "health": {
+        tamil: "உடல்நலம்",
+        meaning: "The condition of being healthy",
+        example: "உடல்நலம் முக்கியம்."
+    },
+    "doctor": {
+        tamil: "மருத்துவர்",
+        meaning: "A person who treats patients",
+        example: "மருத்துவர் நோயாளியைப் பார்க்கிறார்."
+    },
+    "hospital": {
+        tamil: "மருத்துவமனை",
+        meaning: "A place where patients receive treatment",
+        example: "அவர் மருத்துவமனைக்குச் சென்றார்."
+    },
+    "medicine": {
+        tamil: "மருந்து",
+        meaning: "A substance used to treat illness",
+        example: "மருத்துவர் மருந்து கொடுத்தார்."
+    },
+    "body": {
+        tamil: "உடல்",
+        meaning: "The physical structure of a person",
+        example: "உடலை ஆரோக்கியமாக வைத்துக்கொள்."
+    },
+    "eye": {
+        tamil: "கண்",
+        meaning: "An organ used for seeing",
+        example: "கண் பார்ப்பதற்கு உதவுகிறது."
+    },
+    "ear": {
+        tamil: "காது",
+        meaning: "An organ used for hearing",
+        example: "காது கேட்பதற்கு உதவுகிறது."
+    },
+    "hand": {
+        tamil: "கை",
+        meaning: "The end part of an arm",
+        example: "கையால் எழுதுகிறேன்."
+    },
+    "leg": {
+        tamil: "கால்",
+        meaning: "A limb used for walking",
+        example: "நான் காலால் நடக்கிறேன்."
+    },
+    "time": {
+        tamil: "நேரம்",
+        meaning: "A measure of duration",
+        example: "நேரம் மிகவும் மதிப்புமிக்கது."
+    },
+    "day": {
+        tamil: "நாள்",
+        meaning: "A period of 24 hours",
+        example: "இன்று நல்ல நாள்."
+    },
+    "night": {
+        tamil: "இரவு",
+        meaning: "The dark part of the day",
+        example: "இரவில் நிலா தெரிகிறது."
+    },
+    "morning": {
+        tamil: "காலை",
+        meaning: "The early part of the day",
+        example: "காலையில் எழுந்திரு."
+    },
+    "work": {
+        tamil: "வேலை",
+        meaning: "An activity or task",
+        example: "நான் என் வேலையைச் செய்கிறேன்."
+    },
+    "money": {
+        tamil: "பணம்",
+        meaning: "A medium of exchange",
+        example: "பணத்தைச் சேமிக்க வேண்டும்."
+    },
+    "success": {
+        tamil: "வெற்றி",
+        meaning: "The achievement of a goal",
+        example: "முயற்சி வெற்றியைத் தரும்."
+    },
+    "failure": {
+        tamil: "தோல்வி",
+        meaning: "Lack of success",
+        example: "தோல்வி வெற்றியின் ஒரு பகுதி."
+    },
+    "dream": {
+        tamil: "கனவு",
+        meaning: "An ambition or an experience during sleep",
+        example: "எனக்கு ஒரு பெரிய கனவு உள்ளது."
+    },
+    "hope": {
+        tamil: "நம்பிக்கை",
+        meaning: "A feeling of expectation",
+        example: "நம்பிக்கையுடன் இரு."
+    },
+    "truth": {
+        tamil: "உண்மை",
+        meaning: "Something that is real or correct",
+        example: "எப்போதும் உண்மை பேசு."
+    },
+    "peace": {
+        tamil: "அமைதி",
+        meaning: "A state without disturbance",
+        example: "அமைதி மிகவும் அவசியம்."
+    },
+    "freedom": {
+        tamil: "சுதந்திரம்",
+        meaning: "The state of being free",
+        example: "சுதந்திரம் நமது உரிமை."
+    },
+    "country": {
+        tamil: "நாடு",
+        meaning: "A nation with its own government",
+        example: "இந்தியா என் நாடு."
+    },
+    "india": {
+        tamil: "இந்தியா",
+        meaning: "A country in South Asia",
+        example: "இந்தியா என் தாய்நாடு."
+    },
+    "village": {
+        tamil: "கிராமம்",
+        meaning: "A small rural settlement",
+        example: "என் கிராமம் அழகானது."
+    },
+    "city": {
+        tamil: "நகரம்",
+        meaning: "A large and populated place",
+        example: "சென்னை ஒரு பெரிய நகரம்."
+    },
+    "farmer": {
+        tamil: "விவசாயி",
+        meaning: "A person who grows crops",
+        example: "விவசாயி உணவு உற்பத்தி செய்கிறார்."
+    },
+    "student life": {
+        tamil: "மாணவர் வாழ்க்கை",
+        meaning: "The life of a student",
+        example: "மாணவர் வாழ்க்கை கற்றலுக்கான காலம்."
+    },
+    "respect": {
+        tamil: "மரியாதை",
+        meaning: "A feeling of admiration",
+        example: "பெரியவர்களுக்கு மரியாதை கொடு."
+    },
+    "help": {
+        tamil: "உதவி",
+        meaning: "To make something easier for someone",
+        example: "மற்றவர்களுக்கு உதவி செய்."
+    },
+    "kindness": {
+        tamil: "இரக்கம்",
+        meaning: "The quality of being kind",
+        example: "இரக்கம் நல்ல பண்பு."
+    },
+    "courage": {
+        tamil: "தைரியம்",
+        meaning: "The ability to face difficulties",
+        example: "தைரியமாக இரு."
+    },
+    "strength": {
+        tamil: "வலிமை",
+        meaning: "The quality of being strong",
+        example: "உடற்பயிற்சி வலிமையைத் தரும்."
+    },
+    "beautiful": {
+        tamil: "அழகான",
+        meaning: "Pleasing to look at",
+        example: "இந்த மலர் அழகானது."
+    },
+    "good": {
+        tamil: "நல்ல",
+        meaning: "Of a positive quality",
+        example: "அவர் நல்ல மனிதர்."
+    },
+    "bad": {
+        tamil: "கெட்ட",
+        meaning: "Of poor quality",
+        example: "கெட்ட பழக்கங்களைத் தவிர்."
+    },
+    "big": {
+        tamil: "பெரிய",
+        meaning: "Large in size",
+        example: "இது பெரிய வீடு."
+    },
+    "small": {
+        tamil: "சிறிய",
+        meaning: "Little in size",
+        example: "இது சிறிய பூனை."
+    },
+    "new": {
+        tamil: "புதிய",
+        meaning: "Recently made or introduced",
+        example: "என்னிடம் புதிய புத்தகம் உள்ளது."
+    },
+    "old": {
+        tamil: "பழைய",
+        meaning: "Having existed for a long time",
+        example: "இது பழைய வீடு."
+    },
+  
+    "king": {
+        tamil: "அரசன்",
+        meaning: "A male ruler of a kingdom",
+        example: "அரசன் நாட்டை ஆட்சி செய்தான்."
+    },
+    "queen": {
+        tamil: "அரசி",
+        meaning: "A female ruler or wife of a king",
+        example: "அரசி அரண்மனையில் வாழ்ந்தாள்."
+    },
+    "prince": {
+        tamil: "இளவரசன்",
+        meaning: "The son of a king or queen",
+        example: "இளவரசன் வீரமுள்ளவன்."
+    },
+    "people": {
+        tamil: "மக்கள்",
+        meaning: "Human beings in general",
+        example: "மக்கள் ஒன்றாக வாழ்கிறார்கள்."
+    },
+    "man": {
+        tamil: "ஆண்",
+        meaning: "An adult male person",
+        example: "அந்த ஆண் மருத்துவர்."
+    },
+    "woman": {
+        tamil: "பெண்",
+        meaning: "An adult female person",
+        example: "அந்த பெண் ஆசிரியர்."
+    },
+    "child": {
+        tamil: "குழந்தை",
+        meaning: "A young human being",
+        example: "குழந்தை விளையாடுகிறது."
+    },
+    "boy": {
+        tamil: "சிறுவன்",
+        meaning: "A young male child",
+        example: "சிறுவன் ஓடுகிறான்."
+    },
+    "girl": {
+        tamil: "சிறுமி",
+        meaning: "A young female child",
+        example: "சிறுமி பாடுகிறாள்."
+    },
+    "brother": {
+        tamil: "சகோதரன்",
+        meaning: "A male sibling",
+        example: "என் சகோதரன் படிக்கிறான்."
+    },
+    "sister": {
+        tamil: "சகோதரி",
+        meaning: "A female sibling",
+        example: "என் சகோதரி பாடுகிறாள்."
+    },
+    "grandfather": {
+        tamil: "தாத்தா",
+        meaning: "The father of one's parent",
+        example: "என் தாத்தா கதை சொல்கிறார்."
+    },
+    "grandmother": {
+        tamil: "பாட்டி",
+        meaning: "The mother of one's parent",
+        example: "என் பாட்டி உணவு சமைக்கிறார்."
+    },
+    "uncle": {
+        tamil: "மாமா",
+        meaning: "A male relative",
+        example: "என் மாமா வந்தார்."
+    },
+    "aunt": {
+        tamil: "அத்தை",
+        meaning: "A female relative",
+        example: "என் அத்தை பேசுகிறார்."
+    },
+    "morning": {
+        tamil: "காலை",
+        meaning: "The early part of the day",
+        example: "காலை நேரம் இனிமையானது."
+    },
+    "afternoon": {
+        tamil: "பிற்பகல்",
+        meaning: "The part of the day after noon",
+        example: "பிற்பகலில் படிக்கிறேன்."
+    },
+    "evening": {
+        tamil: "மாலை",
+        meaning: "The later part of the day",
+        example: "மாலையில் விளையாடுகிறேன்."
+    },
+    "yesterday": {
+        tamil: "நேற்று",
+        meaning: "The day before today",
+        example: "நேற்று மழை பெய்தது."
+    },
+    "tomorrow": {
+        tamil: "நாளை",
+        meaning: "The day after today",
+        example: "நாளை கல்லூரிக்குச் செல்வேன்."
+    },
+    "today": {
+        tamil: "இன்று",
+        meaning: "The present day",
+        example: "இன்று நல்ல நாள்."
+    },
+    "week": {
+        tamil: "வாரம்",
+        meaning: "A period of seven days",
+        example: "ஒரு வாரத்தில் ஏழு நாட்கள் உள்ளன."
+    },
+    "month": {
+        tamil: "மாதம்",
+        meaning: "A division of a year",
+        example: "இந்த மாதம் தேர்வு உள்ளது."
+    },
+    "year": {
+        tamil: "ஆண்டு",
+        meaning: "A period of twelve months",
+        example: "ஒரு ஆண்டில் பன்னிரண்டு மாதங்கள் உள்ளன."
+    },
+    "summer": {
+        tamil: "கோடைக்காலம்",
+        meaning: "The hottest season of the year",
+        example: "கோடைக்காலத்தில் வெயில் அதிகம்."
+    },
+    "winter": {
+        tamil: "குளிர்காலம்",
+        meaning: "The cold season",
+        example: "குளிர்காலத்தில் குளிர் அதிகம்."
+    },
+    "cloud": {
+        tamil: "மேகம்",
+        meaning: "A visible mass of water droplets in the sky",
+        example: "வானில் மேகம் திரண்டுள்ளது."
+    },
+    "thunder": {
+        tamil: "இடி",
+        meaning: "The sound caused by lightning",
+        example: "மழையுடன் இடி இடித்தது."
+    },
+    "lightning": {
+        tamil: "மின்னல்",
+        meaning: "A flash of electricity in the sky",
+        example: "வானில் மின்னல் தோன்றியது."
+    },
+    "forest": {
+        tamil: "காடு",
+        meaning: "A large area covered with trees",
+        example: "காட்டில் பல விலங்குகள் வாழ்கின்றன."
+    },
+    "garden": {
+        tamil: "தோட்டம்",
+        meaning: "A place where plants and flowers grow",
+        example: "எங்கள் தோட்டத்தில் மலர்கள் உள்ளன."
+    },
+    "stone": {
+        tamil: "கல்",
+        meaning: "A hard natural material",
+        example: "அவன் ஒரு கல்லை எடுத்தான்."
+    },
+    "sand": {
+        tamil: "மணல்",
+        meaning: "Loose grains of rock",
+        example: "கடற்கரையில் மணல் உள்ளது."
+    },
+    "soil": {
+        tamil: "மண்",
+        meaning: "The upper layer of earth",
+        example: "மண்ணில் விதை விதைத்தேன்."
+    },
+    "gold": {
+        tamil: "தங்கம்",
+        meaning: "A precious yellow metal",
+        example: "தங்கம் விலைமதிப்புடையது."
+    },
+    "silver": {
+        tamil: "வெள்ளி",
+        meaning: "A precious white metal",
+        example: "வெள்ளி ஒரு உலோகம்."
+    },
+    "iron": {
+        tamil: "இரும்பு",
+        meaning: "A strong metallic element",
+        example: "இரும்பு வலிமையானது."
+    },
+    "energy": {
+        tamil: "ஆற்றல்",
+        meaning: "The ability to do work",
+        example: "உணவு நமக்கு ஆற்றல் தருகிறது."
+    },
+    "science": {
+        tamil: "அறிவியல்",
+        meaning: "The systematic study of nature",
+        example: "அறிவியல் புதிய கண்டுபிடிப்புகளை உருவாக்குகிறது."
+    },
+    "mathematics": {
+        tamil: "கணிதம்",
+        meaning: "The study of numbers and quantities",
+        example: "எனக்கு கணிதம் பிடிக்கும்."
+    },
+    "physics": {
+        tamil: "இயற்பியல்",
+        meaning: "The study of matter and energy",
+        example: "இயற்பியல் ஒரு முக்கியமான பாடம்."
+    },
+    "chemistry": {
+        tamil: "வேதியியல்",
+        meaning: "The study of substances and reactions",
+        example: "வேதியியல் ஆய்வகத்தில் பரிசோதனை செய்தோம்."
+    },
+    "biology": {
+        tamil: "உயிரியல்",
+        meaning: "The study of living organisms",
+        example: "உயிரியல் உயிரினங்களைப் பற்றி விளக்குகிறது."
+    },
+    "history": {
+        tamil: "வரலாறு",
+        meaning: "The study of past events",
+        example: "நான் வரலாறு படிக்கிறேன்."
+    },
+    "geography": {
+        tamil: "புவியியல்",
+        meaning: "The study of Earth and its features",
+        example: "புவியியல் பூமியைப் பற்றி கற்பிக்கிறது."
+    },
+    "art": {
+        tamil: "கலை",
+        meaning: "Creative expression",
+        example: "ஓவியம் ஒரு அழகான கலை."
+    },
+    "music": {
+        tamil: "இசை",
+        meaning: "The art of arranging sounds",
+        example: "எனக்கு இசை பிடிக்கும்."
+    },
+    "dance": {
+        tamil: "நடனம்",
+        meaning: "Moving rhythmically to music",
+        example: "அவள் அழகாக நடனமாடுகிறாள்."
+    },
+    "song": {
+        tamil: "பாடல்",
+        meaning: "A musical composition with words",
+        example: "நான் ஒரு பாடல் பாடுகிறேன்."
+    },
+    "game": {
+        tamil: "விளையாட்டு",
+        meaning: "An activity played for enjoyment",
+        example: "எனக்கு விளையாட்டு பிடிக்கும்."
+    },
+    "hockey": {
+        tamil: "வளைதடிப் பந்தாட்டம்",
+        meaning: "A sport played with sticks and a ball",
+        example: "நான் ஹாக்கி விளையாடுகிறேன்."
+    },
+    "cricket": {
+        tamil: "கிரிக்கெட்",
+        meaning: "A bat-and-ball sport",
+        example: "நாங்கள் கிரிக்கெட் விளையாடுகிறோம்."
+    },
+    "football": {
+        tamil: "கால்பந்து",
+        meaning: "A sport played by kicking a ball",
+        example: "அவன் கால்பந்து விளையாடுகிறான்."
+    },
+    "running": {
+        tamil: "ஓட்டம்",
+        meaning: "Moving quickly on foot",
+        example: "ஓட்டம் உடலுக்கு நல்லது."
+    },
+    "swimming": {
+        tamil: "நீச்சல்",
+        meaning: "Moving through water",
+        example: "நீச்சல் ஒரு நல்ல பயிற்சி."
+    },
+    "victory": {
+        tamil: "வெற்றி",
+        meaning: "Winning a competition",
+        example: "கடின உழைப்பு வெற்றியைத் தரும்."
+    },
+    "competition": {
+        tamil: "போட்டி",
+        meaning: "A contest between participants",
+        example: "நாளை விளையாட்டுப் போட்டி உள்ளது."
+    },
+    "prize": {
+        tamil: "பரிசு",
+        meaning: "Something given to a winner",
+        example: "அவனுக்கு முதல் பரிசு கிடைத்தது."
+    },
+    "medal": {
+        tamil: "பதக்கம்",
+        meaning: "An award given for achievement",
+        example: "அவள் தங்கப் பதக்கம் வென்றாள்."
+    },
+    "leader": {
+        tamil: "தலைவர்",
+        meaning: "A person who guides a group",
+        example: "தலைவர் கூட்டத்தில் பேசினார்."
+    },
+    "government": {
+        tamil: "அரசாங்கம்",
+        meaning: "The system that governs a country",
+        example: "அரசாங்கம் மக்களுக்காகச் செயல்படுகிறது."
+    },
+    "law": {
+        tamil: "சட்டம்",
+        meaning: "A rule made by an authority",
+        example: "அனைவரும் சட்டத்தை மதிக்க வேண்டும்."
+    },
+    "justice": {
+        tamil: "நீதி",
+        meaning: "Fair treatment according to law",
+        example: "அனைவருக்கும் நீதி கிடைக்க வேண்டும்."
+    },
+    "village": {
+        tamil: "கிராமம்",
+        meaning: "A small rural community",
+        example: "என் கிராமம் அமைதியானது."
+    },
+    "market": {
+        tamil: "சந்தை",
+        meaning: "A place where goods are bought and sold",
+        example: "அம்மா சந்தைக்குச் சென்றார்."
+    },
+    "shop": {
+        tamil: "கடை",
+        meaning: "A place where goods are sold",
+        example: "நான் கடைக்குச் சென்றேன்."
+    },
+    "money": {
+        tamil: "பணம்",
+        meaning: "Something used to buy goods and services",
+        example: "பணத்தைச் சேமிக்க வேண்டும்."
+    },
+    "price": {
+        tamil: "விலை",
+        meaning: "The amount paid for something",
+        example: "இந்தப் புத்தகத்தின் விலை என்ன?"
+    },
+    "business": {
+        tamil: "வணிகம்",
+        meaning: "The activity of buying and selling",
+        example: "அவர் வணிகம் செய்கிறார்."
+    },
+    "farmer": {
+        tamil: "விவசாயி",
+        meaning: "A person who cultivates land",
+        example: "விவசாயி பயிர்களை வளர்க்கிறார்."
+    },
+    "crop": {
+        tamil: "பயிர்",
+        meaning: "A plant grown for food or other use",
+        example: "விவசாயி நெற்பயிர் வளர்க்கிறார்."
+    },
+    "seed": {
+        tamil: "விதை",
+        meaning: "The part of a plant that can grow into a new plant",
+        example: "விதை முளைக்கிறது."
+    },
+    "animal": {
+        tamil: "விலங்கு",
+        meaning: "A living creature",
+        example: "யானை ஒரு பெரிய விலங்கு."
+    },
+    "horse": {
+        tamil: "குதிரை",
+        meaning: "A large animal used for riding",
+        example: "குதிரை வேகமாக ஓடுகிறது."
+    },
+    "goat": {
+        tamil: "ஆடு",
+        meaning: "A farm animal",
+        example: "ஆடு புல் சாப்பிடுகிறது."
+    },
+    "fish": {
+        tamil: "மீன்",
+        meaning: "An animal that lives in water",
+        example: "மீன் நீரில் நீந்துகிறது."
+    },
+    "butterfly": {
+        tamil: "வண்ணத்துப்பூச்சி",
+        meaning: "An insect with colourful wings",
+        example: "வண்ணத்துப்பூச்சி மலரில் அமர்ந்தது."
+    },
+    "snake": {
+        tamil: "பாம்பு",
+        meaning: "A long, legless reptile",
+        example: "பாம்பு ஊர்ந்து செல்கிறது."
+    },
+    "tiger": {
+        tamil: "புலி",
+        meaning: "A large striped wild cat",
+        example: "புலி காட்டில் வாழ்கிறது."
+    },
+    "monkey": {
+        tamil: "குரங்கு",
+        meaning: "A climbing primate",
+        example: "குரங்கு மரத்தில் ஏறியது."
+    },
+    "rabbit": {
+        tamil: "முயல்",
+        meaning: "A small animal with long ears",
+        example: "முயல் வேகமாக ஓடுகிறது."
+    },
+    "butter": {
+        tamil: "வெண்ணெய்",
+        meaning: "A dairy product made from cream",
+        example: "ரொட்டியில் வெண்ணெய் தடவினேன்."
+    },
+    "sugar": {
+        tamil: "சர்க்கரை",
+        meaning: "A sweet substance",
+        example: "தேநீரில் சர்க்கரை சேர்த்தேன்."
+    },
+    "salt": {
+        tamil: "உப்பு",
+        meaning: "A substance used to season food",
+        example: "உப்பை அளவாகச் சேர்க்கவும்."
+    },
+    "honey": {
+        tamil: "தேன்",
+        meaning: "A sweet substance made by bees",
+        example: "தேனீ தேன் சேகரிக்கிறது."
+    },
+    "breakfast": {
+        tamil: "காலை உணவு",
+        meaning: "The first meal of the day",
+        example: "நான் காலை உணவு சாப்பிட்டேன்."
+    },
+    "lunch": {
+        tamil: "மதிய உணவு",
+        meaning: "The meal eaten around midday",
+        example: "நாங்கள் மதிய உணவு சாப்பிட்டோம்."
+    },
+    "dinner": {
+        tamil: "இரவு உணவு",
+        meaning: "The evening meal",
+        example: "இரவு உணவு தயாராக உள்ளது."
+    },
+    "clothes": {
+        tamil: "ஆடைகள்",
+        meaning: "Things worn on the body",
+        example: "ஆடைகள் சுத்தமாக உள்ளன."
+    },
+    "shirt": {
+        tamil: "சட்டை",
+        meaning: "An upper-body garment",
+        example: "அவன் நீல நிறச் சட்டை அணிந்தான்."
+    },
+    "shoe": {
+        tamil: "காலணி",
+        meaning: "A covering worn on the foot",
+        example: "என் காலணி புதியது."
+    },
+    "language": {
+        tamil: "மொழி",
+        meaning: "A system used for communication",
+        example: "ஒவ்வொரு மொழிக்கும் சிறப்பு உண்டு."
+    },
+    "question": {
+        tamil: "கேள்வி",
+        meaning: "A sentence asking for information",
+        example: "ஆசிரியர் ஒரு கேள்வி கேட்டார்."
+    },
+    "answer": {
+        tamil: "பதில்",
+        meaning: "A response to a question",
+        example: "நான் சரியான பதில் சொன்னேன்."
+    },
+    "story": {
+        tamil: "கதை",
+        meaning: "An account of events",
+        example: "பாட்டி ஒரு கதை சொன்னார்."
+    },
+    "poem": {
+        tamil: "கவிதை",
+        meaning: "A piece of literary writing",
+        example: "அவள் ஒரு கவிதை எழுதினாள்."
+    },
+    "library": {
+        tamil: "நூலகம்",
+        meaning: "A place where books are kept",
+        example: "நான் நூலகத்திற்குச் சென்றேன்."
+    }
+
+};
+
+function searchWord() {
+
+    let word = document
+        .getElementById("search")
+        .value.trim().toLowerCase();
+
+    let result = document.getElementById("result");
+
+    if (dictionary[word]) {
+
+        let data = dictionary[word];
+
+        result.innerHTML = `
+            <p class="tamil">${data.tamil}</p>
+            <h3>Meaning:</h3>
+            <p>${data.meaning}</p>
+            <h3>Example:</h3>
+            <p>${data.example}</p>
+        `;
+
+    } else {
+
+        result.innerHTML =
+            "Sorry! Word not found in our dictionary.";
+
+    }
+}
+
+</script>
+
+</body>
+</html>
+s
